@@ -1,0 +1,24 @@
+Package: cat.dt
+Type: Package
+Title: Computerized Adaptive Testing and Decision Trees
+Version: 0.1.0
+Imports: Rglpk, Matrix
+Authors@R: c(person("Javier",
+           "Rodriguez-Cuadrado",,
+           role = c("aut", "cre"),
+           email = "javierro@est-econ.uc3m.es"),
+    person("Juan C.",
+           "Laria",,
+           role = c("aut"),
+           email = "juancarlos.laria@uc3m.es"),
+    person("David",
+           "Delgado-Gomez",,
+           role = "aut", "ths"))
+Description: Implements the Merged Tree-CAT method to generate very complex 
+             and deep test.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+NeedsCompilation: no
+Packaged: 2019-07-12 08:09:01 UTC; J
