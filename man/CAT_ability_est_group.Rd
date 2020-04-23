@@ -35,6 +35,7 @@ tree previously built and the test takers' responses to every item at every
 tree level
 }
 \examples{
+\dontrun{
 data("itemBank")
 # Build the cat.dt
 nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
@@ -43,7 +44,7 @@ nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
 
 # Estimate the ability level of a subject with responses res
 CAT_ability_est_group(nodes, res = itemRes)
-
+}
 }
 \author{
 Javier Rodríguez-Cuadrado

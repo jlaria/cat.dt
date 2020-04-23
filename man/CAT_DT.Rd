@@ -59,6 +59,7 @@ Generates a \code{cat.dt} object containing the CAT decision tree.
 This object has all the necessary information to build the tree.
 }
 \examples{
+\dontrun{
 data("itemBank")
 # Build the cat.dt
 nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
@@ -71,7 +72,7 @@ CAT_ability_est(nodes, res = itemRes[1, ])
 nodes$predict(res = itemRes[1, ])
 # or
 predict(nodes, itemRes[1, ])
-
+}
 }
 \author{
 Javier Rodríguez-Cuadrado

@@ -23,6 +23,7 @@
 #' @author Javier Rodríguez-Cuadrado
 #'
 #' @examples
+#' \dontrun{
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
@@ -34,7 +35,7 @@
 #'
 #' #plot the estimations
 #' plot(estimation$graphics)
-#'
+#' }
 #' @export
 #' 
 #' @import ggplot2

@@ -32,6 +32,7 @@ tree previously built and the test taker's responses to every item at every
 tree level
 }
 \examples{
+\dontrun{
 data("itemBank")
 # Build the cat.dt
 nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
@@ -43,7 +44,7 @@ estimation = CAT_ability_est(nodes, res = itemRes[1, ])
 
 #plot the estimations
 plot(estimation$graphics)
-
+}
 }
 \author{
 Javier Rodríguez-Cuadrado

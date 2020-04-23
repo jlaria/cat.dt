@@ -30,6 +30,7 @@
 #' @author Javier Rodríguez-Cuadrado
 #'
 #' @examples
+#' \dontrun{
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
@@ -42,7 +43,7 @@
 #' nodes$predict(res = itemRes[1, ])
 #' # or
 #' predict(nodes, itemRes[1, ])
-#'
+#' }
 #' @export
 CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
                   stop = 6, limit = 200,

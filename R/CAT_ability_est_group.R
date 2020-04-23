@@ -26,6 +26,7 @@
 #' @author Javier Rodríguez-Cuadrado
 #'
 #' @examples
+#' \dontrun{
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
@@ -34,7 +35,7 @@
 #'
 #' # Estimate the ability level of a subject with responses res
 #' CAT_ability_est_group(nodes, res = itemRes)
-#'
+#' }
 #' @export
 CAT_ability_est_group = function(cat.dt, res) {
 

@@ -14,7 +14,7 @@ Authors@R: c(person("Javier",
     person("David",
            "Delgado-Gomez",,
            role = "aut", "ths"))
-Description: Implements the Merged Tree-CAT method (Javier Rodríguez-Cuadrado et al., 2020, https://doi.org/10.1016/j.eswa.2019.113066) to generate Computerized Adaptive Tests (CATs) based on a decision tree. The tree growth is controlled by merging branches with similar trait distributions and estimations. This package has the necessary tools for creating CATs and estimate the subject's ability level. 
+Description: Implements the Merged Tree-CAT method (Javier Rodriguez-Cuadrado et al., 2020, <doi:10.1016/j.eswa.2019.113066>) to generate Computerized Adaptive Tests (CATs) based on a decision tree. The tree growth is controlled by merging branches with similar trait distributions and estimations. This package has the necessary tools for creating CATs and estimate the subject's ability level. 
 URL: https://github.com/jlaria/cat.dt
 License: GPL-3
 Encoding: UTF-8
