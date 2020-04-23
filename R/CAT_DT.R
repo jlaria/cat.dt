@@ -33,13 +33,15 @@
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
-#'                C = 0.3, stop = 2, limit = 200, inters = 0.98,
+#'                C = 0.3, stop = 6, limit = 200, inters = 0.98,
 #'                p = 0.9, dens = dnorm, 0, 1)
 #'
 #' # Estimate the ability level of a subject with responses res
 #' CAT_ability_est(nodes, res = itemRes[1, ])
 #' # or
 #' nodes$predict(res = itemRes[1, ])
+#' # or
+#' predict(nodes, itemRes[1, ])
 #'
 #' @export
 CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
@@ -47,16 +49,16 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
                   inters = 0.98, p = 0.9,
                   dens, ...) {
 
+  #Check limit
+  if (limit > 10000) {
+    message("Too large value for limit. limit = 10000 is set.\n")
+    limit = 10000
+  }
   #Turn the data frame into a matrix
   bank = as.matrix(bank)
 
   #Calculate the number of item responses for every item depending on the
   #IRT model and allocate the corresponding Fisher Information function
-  # switch(model,
-  #        GRM = {nres = apply(!apply(bank, 2, is.na), 1, sum)
-  #               assign('Fisher_Inf', Fisher_GRM, .GlobalEnv)},
-  #        NRM = {nres = apply(!apply(bank, 2, is.na), 1, sum)/2+1
-  #               assign('Fisher_Inf', Fisher_NRM, .GlobalEnv)})
   switch(model,
          GRM = {nres = apply(!apply(bank, 2, is.na), 1, sum)
          Fisher_Inf = Fisher_GRM},
@@ -79,6 +81,9 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
 
   #Turn C into a vector if it is an integer
   if (length(C) == 1) C = rep(C, nrow(bank))
+
+  #Store C in another variable to keep its original value
+  C_org = C
 
   #Create the first level
   nodes = create_level_1(bank, crit, dens_vec, C, nres, prob_array)
@@ -148,7 +153,8 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
     model = model,
     crit = crit,
     bank = bank,
-    C = C,
+    C = C_org,
+    C_left = C,
     stop = stop,
     limit = limit,
     inters = inters,
@@ -156,6 +162,9 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
     predict = NA)
   cat.dt$predict = function(res){
     CAT_ability_est(cat.dt, res)
+  }
+  cat.dt$predict_group = function(res) {
+    CAT_ability_est_group(cat.dt, res)
   }
 
   class(cat.dt) = "cat.dt"

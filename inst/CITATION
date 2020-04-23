@@ -1,0 +1,22 @@
+citHeader("To cite cat.dt in publications use:")
+
+citEntry(entry = "article",
+         title        = "Merged Tree-CAT: A fast method for building precise computerized adaptive tests based on decision trees",
+         author       = personList(as.person("Javier Rodriguez-Cuadrado"),
+                                   as.person("David Delgado-Gomez"),
+                                   as.person("Juan C. Laria"),
+                                   as.person("Sara Rodriguez-Cuadrado")),
+         journal      = "Expert Systems with Applications",
+         year         = "2020",
+         volume       = "143",
+         number       = "",
+         pages        = "113066",
+         url          = "",
+         doi          = "",
+         publisher    = "Elsevier",
+
+         textVersion  = paste("J. Rodriguez-Cuadrado, D. Delgado-Gomez, J.C. Laria, and S. Rodriguez-Cuadrado ",
+                              ' "Merged Tree-CAT: A fast method for building precise computerized adaptive tests based on decision trees".',
+                              "Expert Systems with Applications",
+                              "143:113066, 2020")
+)

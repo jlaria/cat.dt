@@ -1,11 +1,11 @@
-#' Ability level estimation using a CAT decision tree
+#' Ability level estimation for an individual using a CAT decision tree
 #'
 #' Computes the test taker's estimated ability level based on the CAT decision
 #' tree previously built and the test taker's responses to every item at every
 #' tree level
 #'
 #' @param cat.dt A \code{cat.dt} object returned by \code{\link{CAT_DT}}.
-#' @param res vector containing the test taker's responses to every item
+#' @param res Vector containing the test taker's responses to every item
 #' @return A list containing the following elements:
 #'
 #' \code{$estimation} Estimated ability level after each level of the tree.
@@ -16,10 +16,35 @@
 #'
 #' \code{$items} Administered item in each level.
 #'
+#' \code{$graphics} Plot object of the evolution of the ability level
+#' estimation. It shows the ability level estimation after the individual
+#' has answered to every administered item.
+#'
 #' @author Javier Rodríguez-Cuadrado
 #'
+#' @examples
+#' data("itemBank")
+#' # Build the cat.dt
+#' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
+#'                C = 0.3, stop = 6, limit = 200, inters = 0.98,
+#'                p = 0.9, dens = dnorm, 0, 1)
+#'
+#' # Estimate the ability level of a subject with responses res
+#' estimation = CAT_ability_est(nodes, res = itemRes[1, ])
+#'
+#' #plot the estimations
+#' plot(estimation$graphics)
+#'
 #' @export
+#' 
+#' @import ggplot2
+#' 
 CAT_ability_est = function(cat.dt, res) {
+
+  if (is.matrix(res)) {
+    print("The input must be a vector. For group evaluation use the 'CAT_ability_est_group' function")
+    return()
+  }
 
   tree = cat.dt$nodes
 
@@ -39,11 +64,11 @@ CAT_ability_est = function(cat.dt, res) {
   #For every level
   levels = length(tree) #Number of levels
 
-  items = rep(0, levels-1) #Items of the selected node at every level
+  items = c() #Items of the selected node at every level
 
   for (i in 1:(levels-1)) {
 
-    items[i] = tree[[i]][[node_sel]]$item
+    items = c(items, tree[[i]][[node_sel]]$item)
 
     r = res[items[i]] #Test taker's repsonse to the item of the selected node
 
@@ -61,19 +86,80 @@ CAT_ability_est = function(cat.dt, res) {
 
     estimation[i] = tree[[i+1]][[node_sel]]$est #Estimation at every level
 
+    #If the next item has already been administered, exit the loop
+    if(i<(levels-1)) {
+      if(sum(as.numeric(items == tree[[i+1]][[node_sel]]$item))>0) break
+    }
+
   }
 
-  Dist = cumsum(tree[[levels]][[node_sel]]$dens_vec)*st #Distribution function
+  Dist = cumsum(tree[[i+1]][[node_sel]]$dens_vec)*st #Distribution function
   #values for the final selected node
 
-  linf = theta[which.min(abs(Dist-0.025))] #Lower limit of a 95% confidence
+  llow= theta[which.min(abs(Dist-0.025))] #Lower limit of a 95% credible
   #interval
 
-  lsup = theta[which.min(abs(Dist-0.975))] #Upper limit of a 95% confidence
+  lupp = theta[which.min(abs(Dist-0.975))] #Upper limit of a 95% credible
   #interval
+
+  #Generate a graphic of estimation vs. number of administered items
+
+  graphics = ggplot()+
+    ggtitle("Evolution of the ability level estimation")+
+    aes(x = 1:(levels-1), y = estimation)+
+    geom_point(size = 2, aes(colour = as.factor(res[items])))+
+    geom_line(linetype = "dashed")+
+     xlab("Number of administered items")+
+     ylab("Ability level estimation")+
+     geom_text( aes(label = paste("item ", items)),
+                       vjust = -1)+
+     theme(plot.title =  element_text(hjust = 0.5),
+      panel.grid.minor =  element_line(size = , linetype = 'solid',
+                                               colour = "skyblue1"),
+      panel.grid.major =  element_line(size = , linetype = 'solid',
+                                               colour = "skyblue1"))+
+     scale_x_continuous(minor_breaks = seq(1, 10, 1),
+                                expand = c(.1, .1),
+                                breaks = 1:(levels-1))+
+     scale_y_continuous(expand = c(.05, .05))+
+
+     labs(colour = "Response")
 
   #Return the estimation, the 95% confidence interval and the items
-  return(list(estimation = estimation, linf = linf,
-              lsup = lsup, items = items))
+  return(list(estimation = estimation, llow = llow,
+              lupp = lupp, items = items, graphics = graphics))
 
+}
+
+
+
+#' Predict S3 method for \code{cat.dt}
+#'
+#' @param object A \code{cat.dt} object returned by \code{\link{CAT_DT}}.
+#' @param res Vector containing the test taker's responses to every item
+#' @param ... Not used
+#' 
+#' @return A list containing the following elements:
+#'
+#' \code{$estimation} Estimated ability level after each level of the tree.
+#'
+#' \code{$linf} Lower limit of the final estimation at 95%
+#'
+#' \code{$lsup} Upper limit of the final estimation at 95%
+#'
+#' \code{$items} Administered item in each level.
+#'
+#' \code{$graphics} Plot object of the evolution of the ability level
+#' estimation. It shows the ability level estimation after the individual
+#' has answered to every administered item.
+#'
+#' @author Javier Rodríguez-Cuadrado
+#' @export
+#' 
+predict.cat.dt <- function(object, res, ...){
+  if(is.vector(res)){
+    return(CAT_ability_est(object, res))
+  }else{
+    return(CAT_ability_est_group(object, res))
+  }
 }

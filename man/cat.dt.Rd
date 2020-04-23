@@ -3,7 +3,6 @@
 \docType{package}
 \name{cat.dt}
 \alias{cat.dt}
-\alias{cat.dt-package}
 \title{cat.dt: Computerized Adaptive Testing and Decision Trees}
 \description{
 The cat.dt package implements the Merged Tree-CAT method to generate Computerized Adaptive Tests (CATs) based on a decision tree. The tree growth is controlled by merging branches with similar trait distributions and estimations. This package has the necessary tools for creating CATs and estimate the subject's ability level. The Merged Tree-CAT method is an extension of the Tree-CAT method (see Delgado-Gómez et al., 2019 <doi:10.1016/j.eswa.2018.09.052>).

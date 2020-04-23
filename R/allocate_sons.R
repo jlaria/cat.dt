@@ -23,6 +23,10 @@ allocate_sons = function(nodes_prev, nodes, level) {
 
       nodes_prev[[indx]]$dens_vec = NULL #Eliminate non-necessary density
       #information in the previous nodes
+      
+      ord = order(nodes_prev[[indx]]$ID_sons[, 2]) #Get the order of responses
+      
+      nodes_prev[[indx]]$ID_sons = nodes_prev[[indx]]$ID_sons[ord, ] #Order
 
     }
 

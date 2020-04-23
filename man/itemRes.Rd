@@ -4,7 +4,9 @@
 \name{itemRes}
 \alias{itemRes}
 \title{Example item responses}
-\format{An object of class \code{matrix}.}
+\format{
+An object of class \code{matrix}.
+}
 \usage{
 data(itemRes)
 }

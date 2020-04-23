@@ -4,7 +4,9 @@
 \name{itemBank}
 \alias{itemBank}
 \title{Example item bank}
-\format{An object of class \code{data.frame}.}
+\format{
+An object of class \code{data.frame}.
+}
 \usage{
 data(itemBank)
 }

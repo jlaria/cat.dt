@@ -4,8 +4,18 @@
 \alias{create_levels}
 \title{CAT decision tree level generator}
 \usage{
-create_levels(nodes_prev, bank, crit, C, nres, level, prob_array, limit,
-  tol, inters)
+create_levels(
+  nodes_prev,
+  bank,
+  crit,
+  C,
+  nres,
+  level,
+  prob_array,
+  limit,
+  tol,
+  inters
+)
 }
 \arguments{
 \item{nodes_prev}{list of node lists of the nodes from the previous level}
