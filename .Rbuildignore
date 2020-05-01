@@ -4,3 +4,4 @@ cran-comments.md
 LICENSE
 ^doc$
 ^Meta$
+^README\.Rmd$
