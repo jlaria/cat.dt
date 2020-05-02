@@ -5,3 +5,5 @@ LICENSE
 ^doc$
 ^Meta$
 ^README\.Rmd$
+^NEWS\.md$
+HOW TO CONTRIBUTE TO THE PACKAGE.docx
