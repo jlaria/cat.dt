@@ -62,9 +62,9 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
   #IRT model and allocate the corresponding Fisher Information function
   switch(model,
          GRM = {nres = apply(!apply(bank, 2, is.na), 1, sum)
-         Fisher_Inf = Fisher_GRM},
+         pkg.env$Fisher_Inf = Fisher_GRM},
          NRM = {nres = apply(!apply(bank, 2, is.na), 1, sum)/2+1
-         Fisher_Inf = Fisher_NRM})
+         pkg.env$Fisher_Inf = Fisher_NRM})
 
   #Calculate density function values
   dens_vec = ability_density(dens, ...)

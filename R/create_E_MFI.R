@@ -26,7 +26,7 @@ create_E_MFI = function(bank, theta_est, nres, C) {
   it_av = which(C != 0) #Available items (those with not null capacity)
 
   for (i in 1:length(it_av)) {
-    E[it_av[i]] = Fisher_Inf(theta_est, bank[it_av[i], ], nres[it_av[i]])
+    E[it_av[i]] = pkg.env$Fisher_Inf(theta_est, bank[it_av[i], ], nres[it_av[i]])
   }#Note that the non-available items are not computed and remain 0
 
   return(E) #Return the vector of MSE for every item
