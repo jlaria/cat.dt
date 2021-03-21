@@ -18,7 +18,7 @@
 #' @param tol minimum distance between estimated ability levels to join two nodes
 #' @return A list of node lists. This list is the input list updated with the
 #' joined nodes
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @export
 join_node = function(nodes, level, limit, tol, inters) {
@@ -44,10 +44,14 @@ join_node = function(nodes, level, limit, tol, inters) {
                                       nodes[[i]]$dens_vec
           nodes[[j]]$item_prev = c(nodes[[j]]$item_prev,
                                      nodes[[i]]$item_prev)
-          nodes[[j]]$est = estimate(nodes[[j]]$dens_vec)
+          
+          est = estimate(nodes[[j]]$dens_vec)
+          
+          nodes[[j]]$est = est[[1]]
+          nodes[[j]]$SE = est[[2]]
           nodes[[j]]$D = nodes[[j]]$D+nodes[[i]]$D
-          nodes[[j]][[9]] = c(nodes[[j]][[9]], nodes[[i]][[9]])
           nodes[[j]][[10]] = c(nodes[[j]][[10]], nodes[[i]][[10]])
+          nodes[[j]][[11]] = c(nodes[[j]][[11]], nodes[[i]][[11]])
 
           #Store the nodes to eliminate
           elim = c(elim, i)
@@ -74,10 +78,14 @@ join_node = function(nodes, level, limit, tol, inters) {
                                      nodes[[i]]$dens_vec
             nodes[[j]]$item_prev = c(nodes[[j]]$item_prev,
                                        nodes[[i]]$item_prev)
-            nodes[[j]]$est = estimate(nodes[[j]]$dens_vec)
+            
+            est = estimate(nodes[[j]]$dens_vec)
+            
+            nodes[[j]]$est = est[[1]]
+            nodes[[j]]$SE = est[[2]]
             nodes[[j]]$D = nodes[[j]]$D+nodes[[i]]$D
-            nodes[[j]][[9]] = c(nodes[[j]][[9]], nodes[[i]][[9]])
             nodes[[j]][[10]] = c(nodes[[j]][[10]], nodes[[i]][[10]])
+            nodes[[j]][[11]] = c(nodes[[j]][[11]], nodes[[i]][[11]])
 
             #Store the nodes to eliminate
             elim = c(elim, i)

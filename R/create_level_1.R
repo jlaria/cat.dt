@@ -19,7 +19,7 @@
 #' responses
 #' @return A list of lists. Each of these lists represent a node of the first
 #' level of the decision tree
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @export
 create_level_1 = function(bank, crit, dens_vec, C, nres, prob_array) {
@@ -34,7 +34,7 @@ create_level_1 = function(bank, crit, dens_vec, C, nres, prob_array) {
          },
          MFI = {
 
-           E = create_E_MFI(bank, estimate(dens_vec), nres, C)
+           E = create_E_MFI(bank, estimate(dens_vec)[[1]], nres, C)
            minmax = T
 
          }
@@ -53,8 +53,11 @@ create_level_1 = function(bank, crit, dens_vec, C, nres, prob_array) {
   #Fill the node lists
   for (i in 1:length(item_sel)) {
 
+    est = estimate(dens_vec) #Calculate the estimation and the SE
+    
     nodes[[i]] = create_node(10000+i, dens_vec, item_sel[i], c(),
-                             estimate(dens_vec),
+                             est[[1]],
+                             est[[2]],
                              data.frame(matrix(nrow = 0, ncol = 3)),
                              X[item_sel[i]], E[item_sel[i]])
 

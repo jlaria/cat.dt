@@ -23,10 +23,9 @@
 #' estimation. It shows the ability level estimation after the individual
 #' has answered to every administered item.
 #'
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @examples
-#' \dontrun{
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
@@ -35,10 +34,12 @@
 #'
 #' # Estimate the ability level of a subject with responses res
 #' CAT_ability_est_group(nodes, res = itemRes)
-#' }
+#'
 #' @export
 CAT_ability_est_group = function(cat.dt, res) {
 
+  set.seed(0) #Set the seed when a node has to be randomly chosen
+  
   group_est = list() #Initialization of the vector of lists
 
   for (i in 1:nrow(res)) {

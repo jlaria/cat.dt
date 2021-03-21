@@ -19,7 +19,7 @@
 #' responses
 #' @param C vector of item capacities
 #' @return A vector of all item MSE for the specified node
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @export
 create_E_MEPV = function(bank, dens_vec, nres, prob_array, C) {
@@ -40,7 +40,8 @@ create_E_MEPV = function(bank, dens_vec, nres, prob_array, C) {
       pr = prob_array[it_av[i], , j] #Probability response of response j for
       #item it_av[i]
       apos = a_posteriori(dens_vec, pr) #A posteriori density given the response
-      mse = mse+(theta-estimate(apos))^2*pr #MSE calculus for every evaluated
+      est = 
+      mse = mse+(theta-estimate(apos)[[1]])^2*pr #MSE calculus for every evaluated
       #ability level given the estimation for the response j
 
     }

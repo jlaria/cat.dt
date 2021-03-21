@@ -6,16 +6,16 @@
 #' @param ... not used
 #'
 #' @return A summary of the \code{cat.dt} object
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @export
 summary.cat.dt = function(object, ...) {
   tree <- object
   cat("----------------------------------------------------------------------\n")
 
-  cat("Number of tree levels:", tree$stop, "\n\n")
+  cat("Number of tree levels:", length(tree$nodes)-1, "\n\n")
 
-  for (i in 1:tree$stop) {
+  for (i in 1:(length(tree$nodes)-1)) {
     cat("Number of nodes in level", i,":", length(tree$nodes[[i]]),"\n")
   }
 

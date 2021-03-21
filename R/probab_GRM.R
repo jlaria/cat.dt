@@ -9,7 +9,7 @@
 #' @param nres number of possible item responses
 #' @return A matrix of response probabilities. Rows represent evaluated ability
 #' levels and columns represent responses
-#' @author Javier RodrÃ­guez-Cuadrado
+#' @author Javier Rodríguez-Cuadrado
 #'
 #' @export
 probab_GRM = function(item_par, nres) {

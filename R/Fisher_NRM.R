@@ -9,7 +9,7 @@
 #' @param nres number of possible item responses
 #' @return An integer that represents the Fisher Information value of the
 #' specified item given the ability level
-#' @author Javier RodrÃ­guez-Cuadrado
+#' @author Javier Rodríguez-Cuadrado
 #'
 #' @export
 Fisher_NRM = function(theta_est, item_par, nres) {

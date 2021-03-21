@@ -14,7 +14,7 @@
 #' @param nres vector of number of possible responses for every item
 #' @param C vector of item capacities
 #' @return A vector of all item Fisher Information for the specified node
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @export
 create_E_MFI = function(bank, theta_est, nres, C) {

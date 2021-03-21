@@ -14,7 +14,7 @@
 #' parameters
 #' @param nres vector of number of possible responses for every item
 #' @return A 3-dimensional array of probability responses
-#' @author Javier RodrÃ­guez-Cuadrado
+#' @author Javier Rodríguez-Cuadrado
 #'
 #' @export
 create_prob_array = function(model, bank, nres) {

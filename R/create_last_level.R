@@ -8,12 +8,13 @@
 #' @param prob_array 3-D array of probability responses. Dim 1 represent items,
 #' dim 2 represent evaluated ability levels and dim 3 represent possible
 #' responses
+#' @param SE minimum standard error of the ability level
 #' @return A list of lists. Each of these lists represent a node of the
 #' last level of the decision tree
 #' @author Javier Rodríguez-Cuadrado
 #'
 #' @export
-create_last_level = function(nodes_prev, nres, level, prob_array) {
+create_last_level = function(nodes_prev, nres, level, prob_array, SE) {
 
   #Initialise level nodes
   nodes = list()
@@ -22,28 +23,34 @@ create_last_level = function(nodes_prev, nres, level, prob_array) {
 
   #Add known information to the level nodes
   for (i in 1:length(nodes_prev)) {
+    
+    if (nodes_prev[[i]]$SE > SE) {
 
-    for (j in 1:nres[nodes_prev[[i]]$item]) {
-
-      indx = indx+1 #Update auxiliary variable
-
-      it = nodes_prev[[i]]$item #Item of the father node
-
-      #A posteriori density function values calculus
-      apos = a_posteriori(nodes_prev[[i]]$dens_vec, prob_array[it, , j])
-
-      #Add information
-      nodes[[indx]] = create_node(level*10000+indx, apos, NA,
-                                  c(nodes_prev[[i]]$item,
-                                    nodes_prev[[i]]$item_prev),
-                                  estimate(apos), NA, NA, NA)
-
-      #Add the ID of the father node and the response to that node that leaded
-      #to the current node
-      nodes[[indx]][[9]] = nodes_prev[[i]]$ID
-      nodes[[indx]][[10]] = j
-      nodes[[indx]][[11]] = 1
-
+      for (j in 1:nres[nodes_prev[[i]]$item]) {
+  
+        indx = indx+1 #Update auxiliary variable
+  
+        it = nodes_prev[[i]]$item #Item of the father node
+  
+        #A posteriori density function values calculus
+        apos = a_posteriori(nodes_prev[[i]]$dens_vec, prob_array[it, , j])
+  
+        #Add information
+        est = estimate(apos) #Calculate the estimation and the SE
+        
+        nodes[[indx]] = create_node(level*10000+indx, apos, NA,
+                                    c(nodes_prev[[i]]$item,
+                                      nodes_prev[[i]]$item_prev),
+                                    est[[1]], est[[2]], NA, NA, NA)
+  
+        #Add the ID of the father node and the response to that node that leaded
+        #to the current node
+        nodes[[indx]][[10]] = nodes_prev[[i]]$ID
+        nodes[[indx]][[11]] = j
+        nodes[[indx]][[12]] = 1
+  
+      }
+      
     }
 
   }

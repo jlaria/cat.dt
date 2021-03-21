@@ -17,9 +17,9 @@
 #' @param C vector of maximum item exposures. If it is an integer, this value
 #' is replicated for every item
 #' @param stop vector of two components that represent the decision tree
-#' stopping criterion. The firs component represents the maximum level of the
-#' decision tree, and the second represents the minimum estimated ability level
-#' precision
+#' stopping criterion. The first component represents the maximum level of the
+#' decision tree, and the second represents the minimum standard error of the
+#' ability level (if it is 0, this second criterion is not applied)
 #' @param limit maximum number of level nodes
 #' @param inters minimum common area between density functions in the nodes of
 #' the evaluated pair in order to join them
@@ -27,14 +27,13 @@
 #' @param dens density function (e.g. dnorm, dunif, etc.)
 #' @param ... parameters of the density function
 #' @return An object of class \code{cat.dt}
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @examples
-#' \dontrun{
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
-#'                C = 0.3, stop = 6, limit = 200, inters = 0.98,
+#'                C = 0.3, stop = c(6,0), limit = 200, inters = 0.98,
 #'                p = 0.9, dens = dnorm, 0, 1)
 #'
 #' # Estimate the ability level of a subject with responses res
@@ -43,10 +42,10 @@
 #' nodes$predict(res = itemRes[1, ])
 #' # or
 #' predict(nodes, itemRes[1, ])
-#' }
+#'
 #' @export
 CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
-                  stop = 6, limit = 200,
+                  stop = c(6,0), limit = 200,
                   inters = 0.98, p = 0.9,
                   dens, ...) {
 
@@ -55,6 +54,10 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
     message("Too large value for limit. limit = 10000 is set.\n")
     limit = 10000
   }
+  
+  #Check SE treshold
+  if(stop[2]>=1) stop("The minimum standard error of the ability level introduced must be lower than 1")
+  
   #Turn the data frame into a matrix
   bank = as.matrix(bank)
 
@@ -73,7 +76,6 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
   #items, dim 2 represent evaluated ability levels and dim 3 represent possible
   #responses
   prob_array = create_prob_array(model, bank, nres)
-
 
   #Calculate the minimum distance between estimated ability levels to join two
   #nodes
@@ -101,16 +103,21 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
   #Create the following levels
   level = 2 #Level number to create
   nodes = list(nodes,list()) #Add the (empty) next level list
+  last_level = 0 #Initialize the variable
 
-  while (level <= stop[1]) {
+  while (level <= stop[1] && !last_level) {
     # Check if there are items available
     if(sum(C)==0) stop("Available capacity of items reached zero before completing the tree. Please, decrease the number of levels or increase the number of items in bank. Current level: ", level-1)
 
     nodes[[level]] = list() #Create the (empty) next level list
-    nodes[[level]] = create_levels(nodes[[level-1]], bank, crit, C, nres,
-                                   level, prob_array, limit, tol, inters)
-                                   #Fill the list
-
+    
+    level_return = create_levels(nodes[[level-1]], bank, crit, C, nres,
+                                   level, prob_array, limit, tol, inters, 
+                                   stop[2])
+    
+    nodes[[level]] = level_return[[1]]#Fill the list
+    last_level = level_return[[2]] #To know if this is the last level                               
+    
     #Update item capacities
     num_lev = length(nodes[[level]]) #Number of current level nodes
 
@@ -120,10 +127,16 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
     #Remove unnecessary information and update capacities
     for (i in 1:num_lev) {
 
-      nodes[[level]][[i]][c(9, 10, 11)] = NULL
+      nodes[[level]][[i]][c(10, 11, 12)] = NULL
+      
+      if (!is.na(nodes[[level]][[i]]$item)) {
+        
+        C[nodes[[level]][[i]]$item] = C[nodes[[level]][[i]]$item]-
+          nodes[[level]][[i]]$D
+        
+      }
 
-      C[nodes[[level]][[i]]$item] = C[nodes[[level]][[i]]$item]-
-        nodes[[level]][[i]]$D
+     
 
     }
 
@@ -134,18 +147,23 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
   }
 
   #Create last level
-  nodes[[stop[1]+1]] = list()
-  nodes[[stop[1]+1]] = create_last_level(nodes[[stop[1]]], nres, level,
-                                         prob_array)
-
-  #Allocate sons
-  nodes[[stop[1]]] = allocate_sons(nodes[[stop[1]]], nodes[[stop[1]+1]],
-                                   stop[1]+1)
-
-  #Remove unnecessary information
-  for (i in 1:length(nodes[[stop[1]]])) {
-    nodes[[level]][[i]][c(9, 10, 11)] = NULL
+  if (!last_level) { #If this has not been already created
+    
+    nodes[[stop[1]+1]] = list()
+    nodes[[stop[1]+1]] = create_last_level(nodes[[stop[1]]], nres, level,
+                                           prob_array, stop[2])
+    
+    #Allocate sons
+    nodes[[stop[1]]] = allocate_sons(nodes[[stop[1]]], nodes[[stop[1]+1]],
+                                     stop[1]+1)
+    
+    #Remove unnecessary information
+    for (i in 1:length(nodes[[stop[1]+1]])) {
+      nodes[[stop[1]+1]][[i]][c(10, 11, 12)] = NULL
+    }
+    
   }
+
 
   #rm(Fisher_Inf, envir = .GlobalEnv)
 
@@ -156,7 +174,7 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
     bank = bank,
     C = C_org,
     C_left = C,
-    stop = stop,
+    stop = level-1,
     limit = limit,
     inters = inters,
     dens = dens,

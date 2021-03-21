@@ -7,7 +7,7 @@
 #' @param tree Index of tree to plot. The total number of trees is given by \code{length(nodes$nodes[[1]])}.
 #'
 #' @return A ggplot2 object
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @export
 #' 
@@ -18,10 +18,10 @@ plot_tree = function(object, levels = 3, tree = 1){
   nodes = object
   
   # Check length
-  if (levels > nodes$stop) {
-    message(paste0("Using maximum number of levels: ", nodes$stop, 
+  if (levels > length(nodes$nodes)-1) {
+    message(paste0("Using maximum number of levels: ", length(nodes$nodes)-1, 
                    "\nThis could take some time..."))
-    levels = nodes$stop
+    levels = length(nodes$nodes)-1
   }
   
   if (levels < 2){
@@ -53,24 +53,24 @@ plot_tree = function(object, levels = 3, tree = 1){
   new_fathers = sons
   
   if(levels > 2){
-  for (i in 2:(levels-1)) {
-    
-    father = new_fathers
-    new_fathers = c()
-    
-    for (j in 1:length(father)) {
+    for (i in 2:(levels-1)) {
       
-      sons = nodes$nodes[[i]][[father[j]-(i*10000)]]$ID_sons[,1]
-      new_fathers = c(new_fathers, sons)
-    
-      for (k in sons) {depen = rbind(depen, c(father[j], k,0,0,0,0))}
+      father = new_fathers
+      new_fathers = c()
+      
+      for (j in 1:length(father)) {
+        
+        sons = nodes$nodes[[i]][[father[j]-(i*10000)]]$ID_sons[,1]
+        new_fathers = c(new_fathers, sons)
+      
+        for (k in sons) {depen = rbind(depen, c(father[j], k,0,0,0,0))}
+        
+      }
+      
+      #Mark end and start of level
+      depen = rbind(depen, rep(0, 6))
       
     }
-    
-    #Mark end and start of level
-    depen = rbind(depen, rep(0, 6))
-    
-  }
   }
   lim = which(depen[, 1] == 0)
   
@@ -90,7 +90,7 @@ plot_tree = function(object, levels = 3, tree = 1){
   }
   
   sep = 0.2
-  for(i in 1:nrow(aux)) {
+  for(i in 1:nrow(aux)) { #X and Y coordinates of the plot node position
     
     aux[i, 5] = -1/2*sep*nrow(aux)+(i-1)/(nrow(aux)-1)*sep*nrow(aux)
     aux[i, 6] = -levels+1
@@ -98,7 +98,7 @@ plot_tree = function(object, levels = 3, tree = 1){
   }
   
   fat = unique(aux[ ,1])
-  for (i in fat) {
+  for (i in fat) { #X and Y coordinates of the plot father node position
     
     rws = which(aux[, 1] == i)
     aux[rws, 3] = mean(aux[rws, 5])
@@ -106,7 +106,7 @@ plot_tree = function(object, levels = 3, tree = 1){
     
   }
   
-  for (i in 1:nrow(aux)) {
+  for (i in 1:nrow(aux)) {#Store the coordinates of the node
     
     ind = which(piec[, 2] == aux[i ,2]) 
     piec[ind, 5] = aux[i, 5]
@@ -116,7 +116,8 @@ plot_tree = function(object, levels = 3, tree = 1){
   
   for (i in 1:nrow(piec)) {
     ind = which(aux[, 1] == piec[i, 1])[1]
-    if (is.na(ind)) {piec[i, 3] = piec[i, 5]}
+    if (is.na(ind)) {
+      piec[i, 3] = mean(piec[which(piec[, 1] == piec[i, 1]), 5])}
     else{piec[i, 3] = aux[ind, 3]}
     piec[i, 4] = -levels+2
 
@@ -146,11 +147,17 @@ plot_tree = function(object, levels = 3, tree = 1){
   for (i in 1:nrow(piec)) {
     
     nod = piec[i, 2] - (levels*10000)
+    
+    #If there is item (it is not the last)
+    if (!is.na(nodes$nodes[[levels]][[nod]]$item)) {
+      lab = as.character(nodes$nodes[[levels]][[nod]]$item)
+    }else lab = 'SE'
+      
     p = p +
       geom_point(aes_string(x = piec[i, 5], y = piec[i, 6]),
                  colour = "skyblue", size = 12)+
-      geom_text(aes_string(x = piec[i, 5], y = piec[i, 6], 
-                           label = as.character(nodes$nodes[[levels]][[nod]]$item)))
+      geom_text(aes_string(x = piec[i, 5]), y = piec[i, 6], 
+                           label = lab)
   }
   
   old_piec = piec
@@ -175,7 +182,10 @@ plot_tree = function(object, levels = 3, tree = 1){
     for(i in 1:nrow(aux)) {
       
       equal = which(old_piec[, 1] == aux[i, 2])[1]
-      aux[i, 5] = old_piec[equal, 3]
+      
+      if (is.na(equal)) {aux[i, 5] = -1/2*sep*nrow(aux)+
+                                    (i-1)/(nrow(aux)-1)*sep*nrow(aux)}
+      else  aux[i, 5] = old_piec[equal, 3]
       aux[i, 6] = -k+1
       
     }
@@ -199,7 +209,8 @@ plot_tree = function(object, levels = 3, tree = 1){
     
     for (i in 1:nrow(piec)) {
       ind = which(aux[, 1] == piec[i, 1])[1]
-      if (is.na(ind)) {piec[i, 3] = piec[i, 5]}
+      if (is.na(ind)) {
+        piec[i, 3] = mean(piec[which(piec[, 1] == piec[i, 1]), 5])}
       else{piec[i, 3] = aux[ind, 3]}
       piec[i, 4] = -k+2
       
@@ -210,7 +221,7 @@ plot_tree = function(object, levels = 3, tree = 1){
     #Check distances
     sep = sep*levels/k
     hap = 1
-    while (hap == 1) {
+    while (hap) {
       hap = 0
       for (i in 2:nrow(piec)) {
         if((piec[i-1, 3]- piec[i, 3]) > 0 && abs(piec[i-1, 3]- piec[i, 3]) < sep) {
@@ -241,11 +252,17 @@ plot_tree = function(object, levels = 3, tree = 1){
     for (i in 1:nrow(piec)) {
       
       nod = piec[i, 2] - (k*10000)
+      
+      #If there is item (it is not the last)
+      if (!is.na(nodes$nodes[[k]][[nod]]$item)) {
+        lab = as.character(nodes$nodes[[k]][[nod]]$item)
+      }else lab = 'SE'
+      
       p = p +
         geom_point(aes_string(x = piec[i, 5], y = piec[i, 6]),
                    colour = "skyblue", size = 12)+
-        geom_text(aes_string(x = piec[i, 5], y = piec[i, 6], 
-                             label = as.character(nodes$nodes[[k]][[nod]]$item)))
+        geom_text(aes_string(x = piec[i, 5]), y = piec[i, 6], 
+                             label = lab)
     }
     
   }

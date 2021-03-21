@@ -20,14 +20,13 @@
 #' estimation. It shows the ability level estimation after the individual
 #' has answered to every administered item.
 #'
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #'
 #' @examples
-#' \dontrun{
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
-#'                C = 0.3, stop = 6, limit = 200, inters = 0.98,
+#'                C = 0.3, stop = c(6,0), limit = 200, inters = 0.98,
 #'                p = 0.9, dens = dnorm, 0, 1)
 #'
 #' # Estimate the ability level of a subject with responses res
@@ -35,13 +34,15 @@
 #'
 #' #plot the estimations
 #' plot(estimation$graphics)
-#' }
+#'
 #' @export
 #' 
 #' @import ggplot2
 #' 
 CAT_ability_est = function(cat.dt, res) {
 
+  set.seed(0) #Set the seed when a node has to be randomly chosen
+  
   if (is.matrix(res)) {
     print("The input must be a vector. For group evaluation use the 'CAT_ability_est_group' function")
     return()
@@ -66,38 +67,43 @@ CAT_ability_est = function(cat.dt, res) {
   levels = length(tree) #Number of levels
 
   items = c() #Items of the selected node at every level
-
-  for (i in 1:(levels-1)) {
-
+  i = 1; #Initialize counter
+  
+  while (!is.na(tree[[i]][[node_sel]]$item)) {
+    
     items = c(items, tree[[i]][[node_sel]]$item)
-
+    
     r = res[items[i]] #Test taker's repsonse to the item of the selected node
-
+    
     son = which(tree[[i]][[node_sel]]$ID_sons[, "Response"] == r) #The son(s)
     #of the selected node given the test taker's response
-
+    
     if (length(son) > 1) { #If there is more than one son
       son = sample(son, 1, prob =
                      tree[[i]][[node_sel]]$ID_sons[son, "Probability"]) #Pick just
       #one son based on their probabilities
     }
-
+    
     node_sel = tree[[i]][[node_sel]]$ID_sons[son, "ID_son"]-10000*(i+1) #The
     #node that corresponds to the son
-
+    
     estimation[i] = tree[[i+1]][[node_sel]]$est #Estimation at every level
-
+    
     #If the next item has already been administered, exit the loop
-    if(i<(levels-1)) {
+    if(!is.na(tree[[i+1]][[node_sel]]$item)) {
       if(sum(as.numeric(items == tree[[i+1]][[node_sel]]$item))>0) break
     }
-
+    
+    i = i+1;
+    
   }
+  
+  levels = i; #update levels
 
-  Dist = cumsum(tree[[i+1]][[node_sel]]$dens_vec)*st #Distribution function
+  Dist = cumsum(tree[[levels]][[node_sel]]$dens_vec)*st #Distribution function
   #values for the final selected node
 
-  llow= theta[which.min(abs(Dist-0.025))] #Lower limit of a 95% credible
+  llow = theta[which.min(abs(Dist-0.025))] #Lower limit of a 95% credible
   #interval
 
   lupp = theta[which.min(abs(Dist-0.975))] #Upper limit of a 95% credible
@@ -112,7 +118,7 @@ CAT_ability_est = function(cat.dt, res) {
     geom_line(linetype = "dashed")+
      xlab("Number of administered items")+
      ylab("Ability level estimation")+
-     geom_text( aes(label = paste("item ", items)),
+     geom_text(aes(label = paste("item ", items)),
                        vjust = -1)+
      theme(plot.title =  element_text(hjust = 0.5),
       panel.grid.minor =  element_line(size = , linetype = 'solid',
@@ -154,7 +160,7 @@ CAT_ability_est = function(cat.dt, res) {
 #' estimation. It shows the ability level estimation after the individual
 #' has answered to every administered item.
 #'
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodr?guez-Cuadrado
 #' @export
 #' 
 predict.cat.dt <- function(object, res, ...){
