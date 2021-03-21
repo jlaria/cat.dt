@@ -18,5 +18,5 @@ A vector of density values
 Computes the density function values of the evaluated ability levels
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodriguez-Cuadrado
 }

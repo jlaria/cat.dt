@@ -14,7 +14,8 @@ create_levels(
   prob_array,
   limit,
   tol,
-  inters
+  inters,
+  SE
 )
 }
 \arguments{
@@ -47,14 +48,17 @@ of the evaluated pair in order to consider whether to join them}
 
 \item{inters}{minimum common area between density functions in the nodes of
 the evaluated pair in order to join them}
+
+\item{SE}{minimum standard error of the ability level}
 }
 \value{
-A list of lists. Each of these lists represent a node of the
-specified level of the decision tree
+A list of lists and a scalar. Each of the lists represent a node of
+the specified level of the decision tree, and the scalar represents if the
+created level is the last (1) or not (0) due to the SE stopping criterion
 }
 \description{
 Generates a list of node lists for a specific level of the CAT decision tree
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

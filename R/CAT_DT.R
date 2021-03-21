@@ -56,6 +56,7 @@ CAT_DT = function(bank, model = "GRM", crit = "MEPV", C = 0.3,
   }
   
   #Check SE treshold
+  if(length(stop) < 2){stop[2]=0.0}
   if(stop[2]>=1) stop("The minimum standard error of the ability level introduced must be lower than 1")
   
   #Turn the data frame into a matrix

@@ -58,7 +58,7 @@ data("itemBank")
 The function `CAT_DT` is called and the tree is stored in the variable `TreeCAT`:
 
 ```{r}
-TreeCAT = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV", C = 0.3, stop = 6, limit = 200, inters = 0.98, p = 0.9, dens = dnorm, 0, 1)
+TreeCAT = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV", C = 0.3, stop = c(6, 0), limit = 200, inters = 0.98, p = 0.9, dens = dnorm, 0, 1)
 ```
 
 The function `CAT_DT` returns an object of class `cat.dt`. This object contains a list of the input parameters and also the following elements:

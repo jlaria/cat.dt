@@ -4,7 +4,7 @@
 \alias{create_node}
 \title{Node creator}
 \usage{
-create_node(ID, dens_vec, item, item_prev, est, ID_sons, D, as_val)
+create_node(ID, dens_vec, item, item_prev, est, SE, ID_sons, D, as_val)
 }
 \arguments{
 \item{ID}{integer that represents the specified node identification in the
@@ -19,6 +19,8 @@ of the evaluated ability levels}
 
 \item{est}{estimated ability level in the specified node}
 
+\item{SE}{standard error of the estimated ability level}
+
 \item{ID_sons}{data frame containing the information of the sons of the
 specified node. Rows represent sons and columns represent the ID of the son,
 the response given to the item of the specified node that leaded to the son
@@ -28,8 +30,8 @@ one if the son had previously splitted)}
 \item{D}{confluency of the specified node}
 
 \item{as_val}{associated value of the specified node. It can be the MSE if
-the selection criterium is "MEPV", the FI if the selection criterium is
-"MFI" and ****}
+the selection criterium is "MEPV" and the FI if the selection criterium is
+"MFI"}
 }
 \value{
 A list that represents a node of the decision tree
@@ -38,5 +40,5 @@ A list that represents a node of the decision tree
 Generates a list that represents a specific node of the CAT decision tree
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

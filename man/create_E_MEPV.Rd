@@ -35,5 +35,5 @@ the ability level density function in the specified node and the ability
 level estimations given the item responses
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

@@ -20,5 +20,5 @@ A ggplot2 object
 Generates a plot object to visualize the CAT decision tree
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

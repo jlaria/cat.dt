@@ -29,7 +29,7 @@
 #' data("itemBank")
 #' # Build the cat.dt
 #' nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
-#'                C = 0.3, stop = 6, limit = 200, inters = 0.98,
+#'                C = 0.3, stop = c(6, 0), limit = 200, inters = 0.98,
 #'                p = 0.9, dens = dnorm, 0, 1)
 #'
 #' # Estimate the ability level of a subject with responses res

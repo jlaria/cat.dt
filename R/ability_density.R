@@ -11,7 +11,7 @@ num_theta = 2*lim/st+1 #Number of evaluated ability levels
 #' @param dens density function (e.g. dnorm, dunif, etc.)
 #' @param ... parameters of the density function
 #' @return A vector of density values
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodriguez-Cuadrado
 #'
 #' @export
 ability_density = function(dens,...) {

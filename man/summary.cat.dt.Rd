@@ -18,5 +18,5 @@ A summary of the \code{cat.dt} object
 Summary of the \code{cat.dt} object generated
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

@@ -11,11 +11,12 @@ estimate(dens_vec)
 levels}
 }
 \value{
-A number, the expected value of the ability level density function
+A list containing the expected value of the ability level density 
+function and the standard error of that expectated value
 }
 \description{
 Computes the estimated ability level given the ability level density
-function values
+function values and its standard error
 }
 \author{
 Javier Rodríguez-Cuadrado

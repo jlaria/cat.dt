@@ -14,7 +14,7 @@
 #' @return A matrix of exposure rates. Rows represent items and columns
 #' represent level nodes. Every item with a positive exposure rate for a level
 #' node is allocated to that node
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier RodrÃ­guez-Cuadrado
 #'
 #' @export
 item_selector = function(E_mat, D, C, minmax) {

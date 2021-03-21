@@ -36,5 +36,5 @@ level of the decision tree
 Generates a list of nodes lists for the first level of the CAT decision tree
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

@@ -9,7 +9,7 @@ CAT_DT(
   model = "GRM",
   crit = "MEPV",
   C = 0.3,
-  stop = 6,
+  stop = c(6, 0),
   limit = 200,
   inters = 0.98,
   p = 0.9,
@@ -36,9 +36,9 @@ Expected Posterior Variance and "MFI" for Maximum Fisher Information}
 is replicated for every item}
 
 \item{stop}{vector of two components that represent the decision tree
-stopping criterion. The firs component represents the maximum level of the
-decision tree, and the second represents the minimum estimated ability level
-precision}
+stopping criterion. The first component represents the maximum level of the
+decision tree, and the second represents the minimum standard error of the
+ability level (if it is 0, this second criterion is not applied)}
 
 \item{limit}{maximum number of level nodes}
 
@@ -59,11 +59,10 @@ Generates a \code{cat.dt} object containing the CAT decision tree.
 This object has all the necessary information to build the tree.
 }
 \examples{
-\dontrun{
 data("itemBank")
 # Build the cat.dt
 nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
-               C = 0.3, stop = 6, limit = 200, inters = 0.98,
+               C = 0.3, stop = c(6,0), limit = 200, inters = 0.98,
                p = 0.9, dens = dnorm, 0, 1)
 
 # Estimate the ability level of a subject with responses res
@@ -72,8 +71,8 @@ CAT_ability_est(nodes, res = itemRes[1, ])
 nodes$predict(res = itemRes[1, ])
 # or
 predict(nodes, itemRes[1, ])
-}
+
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

@@ -4,7 +4,7 @@
 \alias{create_last_level}
 \title{CAT decision tree last level generator}
 \usage{
-create_last_level(nodes_prev, nres, level, prob_array)
+create_last_level(nodes_prev, nres, level, prob_array, SE)
 }
 \arguments{
 \item{nodes_prev}{list of node lists of the nodes from the previous level}
@@ -16,6 +16,8 @@ create_last_level(nodes_prev, nres, level, prob_array)
 \item{prob_array}{3-D array of probability responses. Dim 1 represent items,
 dim 2 represent evaluated ability levels and dim 3 represent possible
 responses}
+
+\item{SE}{minimum standard error of the ability level}
 }
 \value{
 A list of lists. Each of these lists represent a node of the

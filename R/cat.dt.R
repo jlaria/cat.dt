@@ -6,7 +6,7 @@
 #' @section Main interface function:
 #' CAT_DT
 #' @seealso \code{\link{CAT_DT}}
-#' @author Javier Rodr�guez-Cuadrado, David Delgado-Gómez, Juan C. Laria
+#' @author Javier Rodríguez-Cuadrado, David Delgado-Gómez, Juan C. Laria
 #' @docType package
 #' @name cat.dt
 NULL

@@ -8,7 +8,7 @@
 #' @param prob a vector of probability response for every evaluated ability
 #' level given the item response
 #' @return A vector of a posteriori density values
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier Rodriguez-Cuadrado
 #' @export
 a_posteriori = function(apriori, prob) {
 

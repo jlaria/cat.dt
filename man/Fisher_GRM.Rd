@@ -23,5 +23,5 @@ Computes the item Fisher Information given an ability level based on the GRM
 model
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodriguez-Cuadrado
 }

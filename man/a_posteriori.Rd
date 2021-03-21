@@ -21,5 +21,5 @@ Computes the a posteriori density function values of the evaluated ability
 levels given the item response
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodriguez-Cuadrado
 }

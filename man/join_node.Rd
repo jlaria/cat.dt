@@ -34,5 +34,5 @@ the mean of the density functions of the joined nodes and the confluencies
 are summed.
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

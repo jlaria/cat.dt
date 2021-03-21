@@ -32,5 +32,5 @@ has answered to every administered item.
 Predict S3 method for \code{cat.dt}
 }
 \author{
-Javier Rodríguez-Cuadrado
+Javier Rodr?guez-Cuadrado
 }

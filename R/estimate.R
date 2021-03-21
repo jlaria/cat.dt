@@ -7,7 +7,7 @@
 #' levels
 #' @return A list containing the expected value of the ability level density 
 #' function and the standard error of that expectated value
-#' @author Javier Rodríguez-Cuadrado
+#' @author Javier RodrÃ­guez-Cuadrado
 #'
 #' @export
 estimate = function(dens_vec) {
