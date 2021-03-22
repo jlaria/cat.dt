@@ -41,8 +41,6 @@
 #' 
 CAT_ability_est = function(cat.dt, res) {
 
-  set.seed(0) #Set the seed when a node has to be randomly chosen
-  
   if (is.matrix(res)) {
     print("The input must be a vector. For group evaluation use the 'CAT_ability_est_group' function")
     return()
