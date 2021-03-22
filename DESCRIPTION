@@ -1,7 +1,7 @@
 Package: cat.dt
 Type: Package
 Title: Computerized Adaptive Testing and Decision Trees
-Version: 0.2.9000
+Version: 0.3.0
 Imports: Rglpk, Matrix, ggplot2
 Authors@R: c(person("Javier",
            "Rodriguez-Cuadrado",,

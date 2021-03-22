@@ -1,3 +1,13 @@
+# New version 0.3.0
+
+## Test environment
+  * rocker/rstudio:latest, R 4.0.4
+  * r-hub (macOS 10.13.6 High Sierra, R-release, brew)
+
+## Check results
+  
+  Finished: SUCCESS
+
 # New version 0.2.0
 
 ## Test environments
