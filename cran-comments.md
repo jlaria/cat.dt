@@ -3,6 +3,7 @@
 ## Test environment
   * rocker/rstudio:latest, R 4.0.4
   * r-hub (macOS 10.13.6 High Sierra, R-release, brew)
+  * r-hub (Windows Server 2008 R2 SP1, R-devel, 32/64 bit)
 
 ## Check results
   
