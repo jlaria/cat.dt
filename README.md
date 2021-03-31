@@ -18,11 +18,11 @@ the items found.
 
 The cat.dt package includes the following functionalities:
 
-  - Building of the Tree-CAT.
-  - Graphical display of the Tree-CAT created.
-  - Estimation of the ability level for an individual or group of
+-   Building of the Tree-CAT.
+-   Graphical display of the Tree-CAT created.
+-   Estimation of the ability level for an individual or group of
     examinees.
-  - Graphical visualization of the evolution of the estimation of the
+-   Graphical visualization of the evolution of the estimation of the
     ability level of each examinee according to their responses.
 
 ## Tree-CAT creation
@@ -43,7 +43,7 @@ repository [github.com/jlaria/cat.dt](https://github.com/jlaria/cat.dt).
 Once the package is installed, the Tree-CAT is built by calling the main
 function `CAT_DT`. This function has the following input parameters:
 
-  - `bank`: Item bank. It must be a data frame in which each row
+-   `bank`: Item bank. It must be a data frame in which each row
     represents an item and each column one of its parameters. If the
     probabilistic response model chosen is the Graded Response Model
     (GRM, polytomous items with ordered responses) (Samejima, 1969,
@@ -55,31 +55,33 @@ function `CAT_DT`. This function has the following input parameters:
     [doi.org/10.1007/BF02291411](https://doi.org/10.1007/BF02291411)),
     the odd columns must be the slope parameters and the even columns
     the intercept parameters.
-  - `model`: CAT probabilistic model. Options: `"GRM"` (default) and
+-   `model`: CAT probabilistic model. Options: `"GRM"` (default) and
     `"NRM"`.
-  - `crit`: Item selection criterion. Options: `"MEPV"` for the Minimum
+-   `crit`: Item selection criterion. Options: `"MEPV"` for the Minimum
     Expected Posterior Variance (default) or `"MFI"` for the Maximum
     Fisher Information.
-  - `C`: Expected fraction \(C\) of participants administered with each
+-   `C`: Expected fraction *C* of participants administered with each
     item (exposure rate). It can be a vector with as many elements as
     items in the bank or a positive number if all the items have the
     same rate. Default: `C = 0.3`.
-  - `stop`: Number \(L\) of levels of the tree that indicate the number
-    of items that are administered to each examinee (test length). It
-    must be a natural number. Default: `stop = 6`.
-  - `limit`: Maximum number \(N\) of nodes per level (max. \(N=10000\)).
+-   `stop`: vector of two components that represent the decision tree
+    stopping criterion. The first component represents the maximum level
+    *L* of the decision tree, and the second represents the minimum
+    standard error of the ability level (if it is 0, this second
+    criterion is not applied). Default: `stop = c(6,0)`.
+-   `limit`: Maximum number *N* of nodes per level (max. *N* = 10000).
     This is the main parameter that controls the tree growth. It must be
     a natural number. Default: `limit = 200`.
-  - `inters`: Minimum intersection of the density functions of two nodes
+-   `inters`: Minimum intersection of the density functions of two nodes
     to be joined. It must be a number between 0 and 1. If the user wants
     to avoid using this criterion, `inters = 0` should be specified.
     Default: `inters = 0.98`.
-  - `p`: Prior probability of the interval whose limits determine a
+-   `p`: Prior probability of the interval whose limits determine a
     threshold for the distance between estimations of nodes to join.
     Default: `p = 0.9`.
-  - `dens`: Prior density function of the latent level. It must be an R
+-   `dens`: Prior density function of the latent level. It must be an R
     function: `dnorm`, `dunif`, etc.
-  - `...`: Parameters to `dens`.
+-   `...`: Parameters to `dens`.
 
 Therefore, it is necessary to have a bank of calibrated items in the
 form of ‘data.frame’ or ‘matrix’. The cat.dt package includes an item
@@ -93,22 +95,24 @@ The function `CAT_DT` is called and the tree is stored in the variable
 `TreeCAT`:
 
 ``` r
-TreeCAT = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV", C = 0.3, stop = 6, limit = 200, inters = 0.98, p = 0.9, dens = dnorm, 0, 1)
+TreeCAT = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV", C = 0.3, stop = c(6, 0.6), limit = 200, inters = 0.98, p = 0.9, dens = dnorm, 0, 1)
 ```
 
 The function `CAT_DT` returns an object of class `cat.dt`. This object
 contains a list of the input parameters and also the following elements:
 
-  - `nodes`: List with \(L+1\) elements (levels). Each level contains a
+-   `nodes`: List with *L* + 1 elements (levels). Each level contains a
     list of the nodes of the corresponding level. The nodes of the
-    additional level \(L+1\) only include the estimation and
+    additional level *L* + 1 only include the estimation and
     distribution of the ability level, given the responses to the items
-    of the final level \(L\).
+    of the final level *L*. Notice that we may end up with a tree with
+    less than *L* + 1 levels, since the stopping criterion of the
+    standard error may prevail for all nodes.
 
-  - `C_left`: Residual exposure rate of each item after the CAT
+-   `C_left`: Residual exposure rate of each item after the CAT
     construction.
 
-  - `predict`: Function that returns the estimated ability level of an
+-   `predict`: Function that returns the estimated ability level of an
     examinee after each response and a Bayesian credible interval of the
     final estimation given their responses to the items from the item
     bank. These responses must be entered by the user as a numeric
@@ -117,7 +121,7 @@ contains a list of the input parameters and also the following elements:
     `graphics` that represents the evolution of the ability level
     estimation through the test.
 
-  - `predict_group`: Function that returns a list whose elements are the
+-   `predict_group`: Function that returns a list whose elements are the
     returned values of the function `predict` for every examinee.
 
 ## Tree-CAT summary
@@ -125,21 +129,21 @@ contains a list of the input parameters and also the following elements:
 The Tree-CAT summary is a description of the Tree-CAT that contains the
 following elements:
 
-  - The number of the Tree-CAT levels.
-  - The number of nodes in each Tree-CAT level.
-  - The psychometric probabilistic model used.
-  - The item selection criterion used.
-  - The exposure of every item from the bank after the Tree-CAT
+-   The number of the Tree-CAT levels.
+-   The number of nodes in each Tree-CAT level.
+-   The psychometric probabilistic model used.
+-   The item selection criterion used.
+-   The exposure of every item from the bank after the Tree-CAT
     creation.
-  - The percentage of items used in the Tree-CAT creation.
+-   The percentage of items used in the Tree-CAT creation.
 
 The summary is obtained in the following way:
 
 ``` r
 summary(TreeCAT)
 #> ----------------------------------------------------------------------
-#> Number of tree levels: 6 
-#> 
+#> Number of tree levels: 6 0.6
+#> Warning in 1:tree$stop: numerical expression has 2 elements: only the first used
 #> Number of nodes in level 1 : 4 
 #> Number of nodes in level 2 : 14 
 #> Number of nodes in level 3 : 39 
@@ -191,6 +195,8 @@ starting by the root node two:
 
 ``` r
 plot_tree(TreeCAT, levels = 3, tree = 2)
+#> Warning in if (levels > nodes$stop) {: the condition has length > 1 and only the
+#> first element will be used
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" /> The
@@ -206,8 +212,8 @@ a group of participants. To administer the Tree-CAT to an individual,
 the function `predict` is used. The arguments of this function are the
 object `Tree-CAT` of the class `cat.dt` and a vector that contains the
 responses provided by the individual to each item from the item bank. It
-is important to note that the responses must take integer values from
-\(1\) upwards.
+is important to note that the responses must take integer values from 1
+upwards.
 
 As an example, the response dataset `itemRes` included in the package
 will be used. From that dataset, the first individual is evaluated
@@ -219,18 +225,18 @@ individual_ev = predict(TreeCAT, itemRes[1, ])
 
 This function returns a list with the following elements:
 
-  - `estimation`: Ability level estimation after each response provided
+-   `estimation`: Ability level estimation after each response provided
     by the individual.
 
-  - `llow`: Lower limit of the \(95\%\) credible interval of the final
+-   `llow`: Lower limit of the 95% credible interval of the final
     estimation.
 
-  - `llup`: Upper limit of the \(95\%\) credible interval of the final
+-   `llup`: Upper limit of the 95% credible interval of the final
     estimation.
 
-  - `items`: Items administered to the individual.
+-   `items`: Items administered to the individual.
 
-  - `graphics`: Plot object that represents the evolution of the ability
+-   `graphics`: Plot object that represents the evolution of the ability
     level estimation after every response.
 
 The estimation output:
@@ -267,10 +273,10 @@ individual_ev$graphics
 
 This plot represents the estimation of the ability level after
 responding to each one of the test items. For example, giving the
-response \(1\) to the item \(70\) results in an estimate of \(-0.5\).
-Then, after giving the response \(3\) to the item \(18\), the estimate
-increases to \(0\) approximately, and so on. Note that the value of the
-response influences whether the estimate decreases or increases.
+response 1 to the item 70 results in an estimate of  − 0.5. Then, after
+giving the response 3 to the item 18, the estimate increases to 0
+approximately, and so on. Note that the value of the response influences
+whether the estimate decreases or increases.
 
 This results can also be obtained by introducing
 

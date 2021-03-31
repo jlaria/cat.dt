@@ -50,7 +50,7 @@ Once the package is installed, the Tree-CAT is built by calling the main functio
 * `model`: CAT probabilistic model. Options: `"GRM"` (default) and `"NRM"`.
 * `crit`: Item selection criterion. Options: `"MEPV"` for the Minimum Expected Posterior Variance (default) or `"MFI"` for the Maximum Fisher Information.
 * `C`: Expected fraction $C$ of participants administered with each item (exposure rate). It can be a vector with as many elements as items in the bank or a positive number if all the items have the same rate. Default: `C = 0.3`.
-* `stop`: Number $L$ of levels of the tree that indicate the number of items that are administered to each examinee (test length). It must be a natural number. Default: `stop = 6`.
+* `stop`: vector of two components that represent the decision tree stopping criterion. The first component represents the maximum level $L$ of the decision tree, and the second represents the minimum standard error of the ability level (if it is 0, this second criterion is not applied). Default: `stop = c(6,0)`. 
 * `limit`: Maximum number $N$ of nodes per level (max. $N=10000$). This is the main parameter that controls the tree growth. It must be a natural number. Default: `limit = 200`.
 * `inters`: Minimum intersection of the density functions of two nodes to be joined. It must be a number between 0 and 1. If the user wants to avoid using this criterion, `inters = 0` should be specified. Default: `inters = 0.98`.
 * `p`: Prior probability of the interval whose limits determine a threshold for the distance between estimations of nodes to join. Default: `p = 0.9`.
@@ -66,12 +66,12 @@ data("itemBank")
 The function `CAT_DT` is called and the tree is stored in the variable `TreeCAT`:
 
 ```{r}
-TreeCAT = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV", C = 0.3, stop = 6, limit = 200, inters = 0.98, p = 0.9, dens = dnorm, 0, 1)
+TreeCAT = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV", C = 0.3, stop = c(6, 0.6), limit = 200, inters = 0.98, p = 0.9, dens = dnorm, 0, 1)
 ```
 
 The function `CAT_DT` returns an object of class `cat.dt`. This object contains a list of the input parameters and also the following elements:
 
-* `nodes`: List with $L+1$ elements (levels). Each level contains a list of the nodes of the corresponding level. The nodes of the additional level $L+1$ only include the estimation and distribution of the ability level, given the responses to the items of the final level $L$.
+* `nodes`: List with $L+1$ elements (levels). Each level contains a list of the nodes of the corresponding level. The nodes of the additional level $L+1$ only include the estimation and distribution of the ability level, given the responses to the items of the final level $L$. Notice that we may end up with a tree with less than $L+1$ levels, since the stopping criterion of the standard error may prevail for all nodes. 
 
 * `C_left`: Residual exposure rate of each item after the CAT construction.
 
