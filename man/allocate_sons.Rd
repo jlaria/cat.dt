@@ -20,5 +20,5 @@ A list of node lists updated with the information of the sons
 Fills the information of the sons of the previous level nodes
 }
 \author{
-Javier Rodr?guez-Cuadrado
+Javier Rodríguez-Cuadrado
 }

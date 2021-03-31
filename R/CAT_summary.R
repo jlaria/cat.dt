@@ -6,7 +6,7 @@
 #' @param ... not used
 #'
 #' @return A summary of the \code{cat.dt} object
-#' @author Javier Rodr?guez-Cuadrado
+#' @author Javier Rodríguez-Cuadrado
 #'
 #' @export
 summary.cat.dt = function(object, ...) {

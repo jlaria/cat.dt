@@ -29,5 +29,5 @@ specified level node in the CAT decision tree. Every FI is computed using
 the estimated ability level in the specified node
 }
 \author{
-Javier Rodr?guez-Cuadrado
+Javier Rodríguez-Cuadrado
 }

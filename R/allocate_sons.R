@@ -6,7 +6,7 @@
 #' @param nodes list of node lists of the nodes from the current level
 #' @param level level of the CAT decision tree
 #' @return A list of node lists updated with the information of the sons
-#' @author Javier Rodr?guez-Cuadrado
+#' @author Javier Rodríguez-Cuadrado
 #'
 #' @export
 allocate_sons = function(nodes_prev, nodes, level) {

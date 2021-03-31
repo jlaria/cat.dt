@@ -35,16 +35,16 @@ tree previously built and the test takers' responses to every item at every
 tree level
 }
 \examples{
-data("itemBank")
+# data("itemBank")
 # Build the cat.dt
-nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
-               C = 0.3, stop = c(3, 0.5), limit = 100, inters = 0.9,
-               p = 0.9, dens = dnorm, 0, 1)
+# nodes = CAT_DT(bank = itemBank, model = "GRM", crit = "MEPV",
+#                C = 0.3, stop = c(2, 0.5), limit = 100, inters = 0.8,
+#                p = 0.8, dens = dnorm, 0, 1)
 
 # Estimate the ability level of a subject with responses res
-CAT_ability_est_group(nodes, res = itemRes)
+# CAT_ability_est_group(nodes, res = itemRes)
 
 }
 \author{
-Javier Rodr?guez-Cuadrado
+Javier Rodríguez-Cuadrado
 }
